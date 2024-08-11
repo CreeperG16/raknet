@@ -4673,6 +4673,8 @@ bool ProcessOfflineNetworkPacket( SystemAddress systemAddress, const char *data,
 				outBitStream.WriteAlignedBytes((const unsigned char*) OFFLINE_MESSAGE_DATA_ID, sizeof(OFFLINE_MESSAGE_DATA_ID));
 
 				rakPeer->rakPeerMutexes[ RakPeer::offlinePingResponse_Mutex ].Lock();
+				// Write length of the data as a short
+				outBitStream.Write( (unsigned short)rakPeer->offlinePingResponse.GetNumberOfBytesUsed() );
 				// They are connected, so append offline ping data
 				outBitStream.Write( (char*)rakPeer->offlinePingResponse.GetData(), rakPeer->offlinePingResponse.GetNumberOfBytesUsed() );
 				rakPeer->rakPeerMutexes[ RakPeer::offlinePingResponse_Mutex ].Unlock();
